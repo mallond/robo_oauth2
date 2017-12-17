@@ -15,4 +15,6 @@ So, with that said the example is in one source code: server.js
 
 > Just say no to Cookies. Cookies work well with singular domains and sub-domains, but when it comes to managing cookies across different domains, it can get hairy. In contrast, a token-based approach with CORS enabled makes it trivial to expose APIs to different services and domains. Since the JWT is required and checked with each and every call to the back-end, as long as there is a valid token, requests can be processed. There are a few caveats to this and we'll address those in the Common Questions and Concerns section below.
 
-![GitHub Logo](https://user-images.githubusercontent.com/993459/34082277-f0624d88-e30f-11e7-9509-19b400018388.jpg)
+![Authenticate](https://user-images.githubusercontent.com/993459/34082330-c72c8fa4-e310-11e7-9266-de41087aa8d7.jpg)
+
+![Journal](https://user-images.githubusercontent.com/993459/34082277-f0624d88-e30f-11e7-9509-19b400018388.jpg)
