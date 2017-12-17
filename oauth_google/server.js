@@ -4,9 +4,9 @@ var Strategy = require('passport-google-oauth20').Strategy;
 
 
 passport.use(new Strategy({
-    clientID: '',
-    clientSecret: '',
-    callbackURL: 'http://localhost:8080/list'
+  clientID: 'your id goes here',
+  clientSecret: 'your secret goes here',
+  callbackURL: 'http://localhost:8080/list'
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
