@@ -4,9 +4,9 @@ var Strategy = require('passport-google-oauth20').Strategy;
 
 
 passport.use(new Strategy({
-  clientID: 'your id goes here',
-  clientSecret: 'your secret goes here',
-  callbackURL: 'http://localhost:8080/list'
+    clientID: 'here',
+    clientSecret: 'here',
+    callbackURL: 'http://localhost:8080/list'
   },
   function(accessToken, refreshToken, profile, cb) {
     // In this example, the user's Facebook profile is supplied as the user
@@ -27,12 +27,14 @@ passport.use(new Strategy({
 // from the database when deserializing.  However, due to the fact that this
 // example does not have a database, the complete Facebook profile is serialized
 // and deserialized.
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
+passport.serializeUser(function(user, done) {
+  console.log('user.id:', user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(function(obj, cb) {
-  cb(null, obj);
+passport.deserializeUser(function(obj, done) {
+  console.log('user.id:', obj.id);
+  done(null, obj);
 });
 
 
@@ -43,7 +45,7 @@ var app = express();
 // Configure view engine to render EJS templates.
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use( express.static( "public" ) );
+app.use(express.static("public"));
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
@@ -95,10 +97,19 @@ app.get('/list',
   }
 );
 
-  app.use(function(req, res) {
-      res.status(400);
-     res.render('404');
-  });
+app.use(function(err, req, res, next) {
+  // Catch Pesky Refresh Token Error - Google API
+  if (err && err.name === 'TokenError') {
+    console.log(err);
+    res.redirect(req.get('referer'));
+  };
+  next();
+});
+
+app.use(function(req, res) {
+  res.status(400);
+  res.render('404');
+});
 
 
 app.listen(8080);
