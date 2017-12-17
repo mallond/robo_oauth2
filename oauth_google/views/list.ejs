@@ -1,3 +1,37 @@
-<p>
-TADA
-</p>
+<html>
+
+<head>
+  <title>Node Authentication</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <!-- load bootstrap css -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <!-- load fontawesome -->
+  <style>
+    body {
+      padding-top: 80px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="jumbotron text-center">
+      <h1><span class="fa fa-lock"></span> List</h1>
+
+      <div id='root'>Loading...</div>
+
+    </div>
+
+  </div>
+  <script type="text/babel">
+
+    var PLAYERS = [ { name: "Satoshi Nakamoto", score: 31, id: 1, }, { name: "Andrew Chalkley", score: 35, id: 2, }, { name: "Alena Holligan", score: 42, id: 3, }, ]; class Players extends React.Component { render() { return (
+    <p>{PLAYERS[0].name}</p>); } } ReactDOM.render(
+    <Players>
+    </Players>, document.getElementById('root') );
+  </script>
+</body>

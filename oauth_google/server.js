@@ -2,15 +2,13 @@ var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-google-oauth20').Strategy;
 
+
 passport.use(new Strategy({
-  clientID: '-9s9jochk9dma6kh6m5kt9lt6qve90e2v.apps..com',
-  clientSecret: '',
-  callbackURL: 'http://localhost:8080/list'
+    clientID: '',
+    clientSecret: '',
+    callbackURL: 'http://localhost:8080/list'
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log('strategy');
-    console.log('display name'+ profile.displayName);
-    console.log('emails:', profile.emails);
     // In this example, the user's Facebook profile is supplied as the user
     // record.  In a production-quality application, the Facebook profile should
     // be associated with a user record in the application's database, which
@@ -30,17 +28,10 @@ passport.use(new Strategy({
 // example does not have a database, the complete Facebook profile is serialized
 // and deserialized.
 passport.serializeUser(function(user, cb) {
-  console.log('serializeUser');
-  console.log('display name'+ user.displayName);
-  console.log('emails:', user.emails);
-
   cb(null, user);
 });
 
 passport.deserializeUser(function(obj, cb) {
-  console.log('deserializeUser');
-  console.log('display name'+ obj.displayName);
-  console.log('emails:', obj.emails);
   cb(null, obj);
 });
 
@@ -56,8 +47,14 @@ app.set('view engine', 'ejs');
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(require('body-parser').urlencoded({
+  extended: true
+}));
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
@@ -66,25 +63,40 @@ app.use(passport.session());
 
 
 // Define routes.
-app.get('/',
-function(req, res){
-  res.render('index');
-});
+app.get('/hello',
+  function(req, res) {
+    res.render('hello');
+  });
 
-app.get('/login',
-  function(req, res){
+
+// Define routes.
+app.get('/',
+  function(req, res) {
     res.render('index');
   });
 
-app.get('/login/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+// Google Login
+app.get('/login/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
 
-
+// Google Redirect Back
 app.get('/list',
-  passport.authenticate('google', { scope : ['profile', 'email'] , failureRedirect: '/login'}),
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    failureRedirect: '404'
+  }),
 
-  function(req, res){
-    //console.log(req)
+
+  function(req, res, err) {
     res.render('list');
+  }
+);
+
+  app.use(function(req, res) {
+      res.status(400);
+     res.render('404');
   });
+
 
 app.listen(8080);
